@@ -1,6 +1,6 @@
 # DESCRIPTION
 
-Chef's Cookbook to change an ip address on a node server and set it to static based on attributes defined in a JSON file. This has been tested and verified working on Ubuntu 12.04. All the receipe does is set a static ip by overwriting the /etc/network/interfaces file in Ubuntu.
+Chef's Cookbook to change an ip address on a node server and set it to static based on attributes defined in a JSON file. This has been tested and verified working on Ubuntu 12.04. All the recipe does is set a static ip by overwriting the /etc/network/interfaces file in Ubuntu.
 
 # REQUIREMENTS
 
