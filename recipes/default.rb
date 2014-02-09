@@ -4,7 +4,7 @@ if nodename == nil
 	nodename = node[:hostname]
 end
 
-db = data_bag_item("servers",nodename)
+db = data_bag_item(node['chef_ipaddress']['databag'], nodename)
 interfaces = db['interfaces']
 
 
