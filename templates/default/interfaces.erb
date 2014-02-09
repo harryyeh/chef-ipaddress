@@ -1,17 +1,12 @@
 auto lo
 iface lo inet loopback
 
-<% @interfaces.each_with_index do |interface, index| %>
-auto <%= "#{interface['name']}" %>
-iface <%= "#{interface['name']}" %> inet static
-address <%= "#{interface['address']}" %>
-netmask <%= "#{interface['netmask']}" %>
-<% if index == 0 %>
-gateway <%= "#{interface['gateway']}" %>
-dns-nameservers <%= "#{interface['dns-nameservers']}" %>
-dns-search <%= "#{interface['dns-search']}" %>
+<% @interfaces.each do |interface, attributes| %>
+auto <%= interface %>
+iface <%= interface %> inet static
+<% attributes.each do |directive, value| %>
+  <%= directive %> <%= value %>
 <% end %>
 
 
 <% end %>
-
