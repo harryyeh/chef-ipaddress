@@ -4,13 +4,13 @@ if nodename == nil
 	nodename = node[:hostname]
 end
 
-db = data_bag_item("servers",nodename)
+db = data_bag_item(node['chef_ipaddress']['databag'], nodename)
 interfaces = db['interfaces']
 
-
 service "networking" do
+  provider Chef::Provider::Service::Upstart
 	service_name "networking"
-  action :restart
+  action :nothing
 end
 
 template "/etc/network/interfaces" do
@@ -20,5 +20,5 @@ template "/etc/network/interfaces" do
   mode "0644"
   action :create
 	variables :interfaces => interfaces
-	#notifies :start, "service[networking]", :immediately
+	notifies :restart, "service[networking]"
 end

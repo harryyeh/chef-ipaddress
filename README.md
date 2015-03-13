@@ -25,9 +25,8 @@ You will need a databag in chef named "servers" the following is a sample data b
 ```json
 {
     "id": "server1",
-    "interfaces": [
-        {
-            		"name":"eth0",
+    "interfaces": {
+        "eth0": {
                 "address": "192.168.1.2",
                 "netmask": "255.255.255.0",
                 "gateway": "192.168.1.1",
@@ -35,12 +34,11 @@ You will need a databag in chef named "servers" the following is a sample data b
                 "dns-search": "test-domain.com"
             
         },
-				{
-								"name":"eth1",
+				"eth1": {
                 "address": "192.168.2.2",
                 "netmask": "255.255.255.0"
 				}
-    ]
+    }
 }
 ```
 
