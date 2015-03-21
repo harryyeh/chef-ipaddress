@@ -20,5 +20,7 @@ template "/etc/network/interfaces" do
   mode "0644"
   action :create
 	variables :interfaces => interfaces
-	notifies :restart, "service[networking]"
+	#if network interface is reconfigured while 
+	#bootstrapping a node, the bootstrapping process fails.
+	#notifies :restart, "service[networking]"
 end
