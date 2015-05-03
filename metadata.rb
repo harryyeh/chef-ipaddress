@@ -1,3 +1,4 @@
+name             'ipaddress'
 maintainer       "Comet Computing"
 maintainer_email "devops@cometcomputing.com"
 license          "Apache 2.0"
