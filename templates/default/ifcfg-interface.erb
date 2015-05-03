@@ -1,0 +1,6 @@
+# This file is managed by the ipaddress cookbook with Chef.
+# Manual changes will be lost.
+
+<% @interfaces.each do |interface, attributes| %>
+<% attributes.each do |directive, value| %>
+<%= directive.upcase %>=<%= value %>
