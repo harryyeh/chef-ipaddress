@@ -10,7 +10,7 @@ http://github.com/harryyeh/chef-ipaddress
 
 ## Platform:
 
-The cookbook aims to be platform independant, but is tested on Ubuntu 12.04.
+The cookbook aims to be platform independent, but is tested on Ubuntu 12.04, and CentOS 7.
 
 # USAGE:
 
@@ -77,4 +77,3 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
-
