@@ -27,17 +27,16 @@ You will need a databag in chef named "servers" the following is a sample data b
     "id": "server1",
     "interfaces": {
         "eth0": {
-                "address": "192.168.1.2",
-                "netmask": "255.255.255.0",
-                "gateway": "192.168.1.1",
-                "dns-nameservers": "192.168.1.1 192.168.1.2",
-                "dns-search": "test-domain.com"
-            
+            "address": "192.168.1.2",
+            "netmask": "255.255.255.0",
+            "gateway": "192.168.1.1",
+            "dns-nameservers": "192.168.1.1 192.168.1.2",
+            "dns-search": "test-domain.com"
         },
-				"eth1": {
-                "address": "192.168.2.2",
-                "netmask": "255.255.255.0"
-				}
+        "eth1": {
+            "address": "192.168.2.2",
+            "netmask": "255.255.255.0"
+        }
     }
 }
 ```

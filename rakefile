@@ -21,7 +21,7 @@ task style: ['style:ruby', 'style:chef']
 
 desc 'Run ChefSpec examples'
 RSpec::Core::RakeTask.new(:unit) do |t|
-  t.pattern = 'spec/*_spec.rb'
+  t.pattern = 'tests/*spec*/*_spec.rb'
 end
 
 desc 'Run Test Kitchen'

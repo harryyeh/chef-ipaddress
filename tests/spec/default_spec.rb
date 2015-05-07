@@ -1,53 +1,64 @@
 require 'chefspec'
 ChefSpec::Coverage.start!
 
-describe 'ipaddress::default' do
+describe 'chef-ipaddress::default' do
   before do
-    stub_data_bag_item('servers', 'Fauxhai').and_return(
+    stub_data_bag_item('servers', 'Fauxhai').and_return(ifaces)
+  end
+
+  centos_tmpl = '/etc/sysconfig/network-scripts/ifcfg'
+  let(:ubuntu_tmpl) { chef_run.template('/etc/network/interfaces') }
+  let(:ifaces) {
+    {
       id: 'Fauxhai',
       interfaces: {
         eth0: {
-          address: '10.1.1.1',
-          netmask: '255.255.255.0',
-          gateway: '10.1.1.255'
+        },
+        eth1: {
         }
       }
-    )
-  end
-
-  let(:centos_tmpl) { chef_run.template('/etc/sysconfig/network-scripts/ifcfg-eth0') }
-  let(:ubuntu_tmpl) { chef_run.template('/etc/network/interfaces') }
+    }
+  }
 
   context 'centos' do
     let (:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0')
-        .converge('ipaddress::default')
+      ChefSpec::SoloRunner.new(
+        platform: 'centos',
+        version: '7.0',
+        cookbook_path: '../')
+          .converge(described_recipe)
     end
 
     it 'should run the default recipe' do
-      expect(chef_run).to include_recipe('ipaddress::default')
+      expect(chef_run).to include_recipe('chef-ipaddress::default')
     end
 
     it 'should create centos network template' do
-      expect(chef_run).to create_template('/etc/sysconfig/network-scripts/ifcfg-eth0')
-        .with(
-          owner: 'root',
-          group: 'root',
-          mode:  '0644'
-      )
+      ifaces[:interfaces].each do |inter|
+        expect(chef_run).to create_template("#{centos_tmpl}-#{inter.first}")
+          .with(
+            owner: 'root',
+            group: 'root',
+            mode:  '0644'
+        )
 
-      expect(centos_tmpl).to notify('service[network]').to(:restart)
+      expect(chef_run.template("#{centos_tmpl}-#{inter.first}"))
+        .to notify('service[network]').to(:restart)
+      end
     end
   end
 
   context 'ubuntu' do
     let (:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04')
-        .converge('ipaddress::default')
+      ChefSpec::SoloRunner.new(
+        platform: 'ubuntu',
+        version: '12.04',
+        cookbook_path: '../')
+          .converge(described_recipe)
     end
 
     it 'should run the default recipe' do
-      expect(chef_run).to include_recipe('ipaddress::default')
+      expect(chef_run).to include_recipe('chef-ipaddress::default')
     end
 
     it 'should create ubuntu network template' do
