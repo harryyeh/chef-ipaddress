@@ -29,14 +29,14 @@ if platform_family?('rhel')
   end
 
   # Centos has a file per interface.
-  interfaces.each do |i|
-    template "/etc/sysconfig/network-scripts/ifcfg-#{i.first}" do
+  interfaces.each do |k, v|
+    template "/etc/sysconfig/network-scripts/ifcfg-#{k}" do
       source 'ifcfg-interface.erb'
       owner 'root'
       group 'root'
       mode '0644'
       action :create
-      variables interfaces: i.last
+      variables interfaces: v
       notifies :restart, 'service[network]'
     end
   end
