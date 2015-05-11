@@ -94,9 +94,9 @@ It will only copy what you have listed in your data bag to the relevant config f
 
 # ATTRIBUTES
 
-set_hostname - this parameter only needs to be set if you are doing a bootstrap
+`set_hostname` - this parameter only needs to be set if you are doing a bootstrap
 
-restart_networking - (default false) controls whether or not networking will be restarted
+`restart_networking` - (default false) controls whether or not networking will be restarted
 
 # LICENSE
 
@@ -105,7 +105,7 @@ chef-ipaddress - Changing the ip address on a linux system using chef.
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Harry Yeh (<devops@cometcomputing.com>)
-| **Author:**          | Tim Terhorst (<mynamewastaken\+git@gmail.com>)
+| **Author:**          | Tim Terhorst (<mynamewastaken@gmail.com>)
 | **Copyright:**       | Copyright (c) 2008-2012 Comet Computing.
 | **License:**         | Apache License, Version 2.0
 
