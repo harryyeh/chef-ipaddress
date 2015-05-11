@@ -1,6 +1,10 @@
 # DESCRIPTION
 
-Chef's Cookbook to change an ip address on a node server and set it to static based on attributes defined in a JSON file. This has been tested and verified working on Ubuntu 12.04. All the recipe does is set a static ip by overwriting the /etc/network/interfaces file in Ubuntu.
+Chef's Cookbook to change an IP address on a node server and set it to static
+based on attributes defined in a JSON file. This has been tested and verified
+working on Ubuntu 12.04, and Centos 7. On Ubuntu, this recipe will edit
+`/etc/network/interfaces`, and `/etc/sysconfig/network-scripts/ifcfg-<name>` on
+Centos.
 
 Direct Link to the project on Github:
 
@@ -10,7 +14,7 @@ http://github.com/harryyeh/chef-ipaddress
 
 ## Platform:
 
-The cookbook aims to be platform independent, but is tested on Ubuntu 12.04, and CentOS 7.
+The cookbook aims to be platform independent, but it's tested on Ubuntu 12.04, and CentOS 7.
 
 # USAGE:
 
@@ -20,7 +24,7 @@ Add your cookbook to the chef server. Make sure you have the following data bag 
 knife cookbook upload chef-ipaddress
 ```
 
-You will need a databag in chef named "servers" the following is a sample data bag
+You will need a databag in chef named "servers" the following is a sample data bag:
 
 ```json
 {
@@ -41,6 +45,39 @@ You will need a databag in chef named "servers" the following is a sample data b
 }
 ```
 
+For a Centos server, you would want something like this:
+
+```json
+{
+    "id": "server1",
+    "interfaces": {
+        "eth0": {
+            "device": "eth0",
+            "bootproto": "none",
+            "onboot": "yes",
+            "ipaddr": "192.168.1.2",
+            "netmask": "255.255.255.0",
+            "gateway": "192.168.1.1",
+            "dns1": "192.168.1.1",
+            "dns2": "192.168.1.3"
+        },
+        "eth1": {
+            "device": "eth1",
+            "bootproto": "none",
+            "onboot": "yes",
+            "ipaddr": "192.168.2.3",
+            "netmask": "255.255.255.0",
+            "gateway": "192.168.2.1",
+            "dns1": "192.168.2.1",
+            "dns2": "192.168.2.2"
+        }
+    }
+}
+```
+
+Note - this recipe will not attempt to do any sort of error checking for you.
+It will only copy what you have listed in your `data bag` to the relevant config files.
+
 Assume you have a file called server1.json use the knife command to add this databag to chef before you add this to the run list. The json file name must match the name of the nodename in chef or this will not work. Or you have to set the attribute set_hostname below when you add it to the run list.
 
 ```shell
@@ -49,11 +86,14 @@ knife data bag from file servers server1.json
 
 ## Notes
 
-Right now if you put this in your run-list and execute chef-client on the node you want this to happen on, you will have to reboot the server manually for the changes to occur. I've commented out Line #23 in default.rb. If you uncomment this it will automatically restart the network connection when you run it.
+By default, the cookbook will _not_ restart the networking service.
+If you want Chef to restart your network service,
+set `default['chef_ipaddress']['restart_networking']` to `true`.
 
 # ATTRIBUTES
 
 set_hostname - this parameter only needs to be set if you are doing a bootstrap
+restart_networking - (default false) controls whether or not networking will be restarted
 
 # LICENSE
 
@@ -62,6 +102,7 @@ chef-ipaddress - Changing the ip address on a linux system using chef.
 |                      |                                          |
 |:---------------------|:-----------------------------------------|
 | **Author:**          | Harry Yeh (<devops@cometcomputing.com>)
+| **Author:**          | Tim Terhorst (<mynamewastaken+git@gmail.com>)
 | **Copyright:**       | Copyright (c) 2008-2012 Comet Computing.
 | **License:**         | Apache License, Version 2.0
 

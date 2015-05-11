@@ -4,11 +4,13 @@ nodename = node['set_hostname'].nil? ? node['hostname'] : node['set_hostname']
 
 db = data_bag_item(node['chef_ipaddress']['databag'], nodename)
 interfaces = db['interfaces']
+restart_action = node['chef_ipaddress']['restart_networking'] ? :restart : :nothing
 
 if platform_family?('debian')
   service 'networking' do
     provider Chef::Provider::Service::Upstart
     action :nothing
+    supports :restart => true
   end
 
   template '/etc/network/interfaces' do
@@ -18,7 +20,7 @@ if platform_family?('debian')
     mode '0644'
     action :create
     variables interfaces: interfaces
-    notifies :restart, 'service[networking]'
+    notifies restart_action, 'service[networking]'
   end
 end
 
@@ -26,6 +28,7 @@ if platform_family?('rhel')
   service 'network' do
     provider Chef::Provider::Service::Systemd
     action :nothing
+    supports :restart => true
   end
 
   # Centos has a file per interface.
@@ -37,7 +40,7 @@ if platform_family?('rhel')
       mode '0644'
       action :create
       variables interfaces: v
-      notifies :restart, 'service[network]'
+      notifies restart_action, 'service[network]'
     end
   end
 end
